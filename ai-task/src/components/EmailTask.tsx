@@ -32,7 +32,7 @@ const EmailTask = ({ provider }: EmailTaskProps) => {
             const response = await callAI(prompt, provider);
             setResult(response);
         } catch (error) {
-            alert('Error generating email');
+            alert('Error generating email.  Please try again.');
             console.error(error);
         } finally {
             setLoading(false);

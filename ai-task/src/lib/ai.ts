@@ -82,7 +82,7 @@ const callGemini = async (prompt: string): Promise<string | null> => {
                     // Ignore parse errors
                 }
 
-                continue; // Try next model
+                continue; 
             }
 
             const data = await response.json();

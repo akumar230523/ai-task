@@ -49,8 +49,8 @@ const InvoiceTask = ({ provider }: InvoiceTaskProps) => {
                 console.error('AI service returned failure message');
             }
         } catch (error) {
-            setResult(`❌ Error: ${error.message}\n\nPlease check your internet connection and API configuration.`);
-            console.error('Task execution error:', error);
+            alert('Error generating Invoice. Please try again.');
+            console.error(error);
         } finally {
             setLoading(false);
         }
