@@ -37,19 +37,14 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
         setResult('');
 
         try {
-            const prompt = `Draft a professional ${docType} with the following specifications:
-
-${details}
-
-Please create a comprehensive legal document with:
-- Proper legal structure and sections
-- Clear terms and conditions
-- Standard clauses relevant to this document type
-- Professional legal language
-- Date and signature sections
-
-Note: This is a template and should be reviewed by a legal professional.`;
-
+            const prompt = `Draft a professional ${docType} with the following specifications: ${details}
+            Please create a comprehensive legal document with:
+            - Proper legal structure and sections
+            - Clear terms and conditions
+            - Standard clauses relevant to this document type
+            - Professional legal language
+            - Date and signature sections
+            Note: This is a template and should be reviewed by a legal professional.`;
             const response = await callAI(prompt, provider);
             setResult(response);
         } catch (error) {
@@ -79,7 +74,7 @@ Note: This is a template and should be reviewed by a legal professional.`;
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
                 {/* Form Section */}
                 <div className="p-4 sm:p-6 lg:p-8">

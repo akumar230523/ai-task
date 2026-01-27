@@ -45,12 +45,12 @@ export default function Header({
     }, []);
 
     return (
-        <header className="w-full bg-white shadow-sm border-b sticky top-0 z-40">
+        <header className="w-full bg-white shadow-sm border-b sticky top-0 z-50">
             <div className="w-full px-4 py-3 sm:py-4">
                 <div className="max-w-7xl mx-auto flex justify-between items-center gap-2 sm:gap-4">
                     {/* Left: Logo and Title */}
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md flex-shrink-0">
+                        <div className="w-10 h-10 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md flex-shrink-0">
                             AI
                         </div>
 

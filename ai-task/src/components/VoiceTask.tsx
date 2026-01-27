@@ -85,7 +85,7 @@ const VoiceTask = ({ provider }: VoiceTaskProps) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
                 {/* Header */}
                 <div className="p-4 sm:p-6 lg:p-8">

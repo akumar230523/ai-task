@@ -22,12 +22,9 @@ export default function App() {
   const [activeTask, setActiveTask] = useState<'invoice' | 'legal' | 'voice' | 'email' | 'summary' | 'translate'>('invoice');
   const [provider, setProvider] = useState<AIProvider>('edenai');
 
-  // FIX 1: Calculate initial state directly during render, removing the first useEffect
   const [kioskMode, setKioskMode] = useState(import.meta.env.VITE_KIOSK_MODE === 'true');
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // FIX 2: Removed the second useEffect entirely. The closing logic is moved to the onTaskSelect handler below.
 
   const tasks = [
     {
@@ -102,26 +99,18 @@ export default function App() {
         {/* Content Area with Sidebar Overlay */}
         <div className="flex-1 flex flex-col relative">
           {/* Sidebar Overlay - Shows on all screens when toggled */}
-          {!kioskMode && sidebarOpen && (
-            <>
-              {/* Dark Overlay */}
-              <div
-                className="fixed inset-0 bg-black/50 z-30"
-                onClick={() => setSidebarOpen(false)}
-              />
 
-              <Sidebar
-                tasks={tasks}
-                activeTask={activeTask}
-                onTaskSelect={(taskId) => {
-                  // FIX 2 Implementation: Update both states in a single event handler
-                  setActiveTask(taskId as typeof activeTask);
-                  setSidebarOpen(false);
-                }}
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-              />
-            </>
+          {!kioskMode && sidebarOpen && (
+            <Sidebar
+              tasks={tasks}
+              activeTask={activeTask}
+              onTaskSelect={(taskId) => {
+                setActiveTask(taskId as typeof activeTask);
+                setSidebarOpen(false);
+              }}
+              isOpen={sidebarOpen}
+              onClose={() => setSidebarOpen(false)}
+            />
           )}
 
           {/* Main Content */}

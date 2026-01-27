@@ -43,13 +43,14 @@ const TranslateTask = ({ provider }: TranslateTaskProps) => {
             setResult(response);
         } catch (error) {
             alert('Error translating text');
+            console.error(error);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-xl shadow-sm border p-4 sm:p-6 lg:p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">

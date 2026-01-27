@@ -40,11 +40,17 @@ const InvoiceTask = ({ provider }: InvoiceTaskProps) => {
                     - Itemized list
                     - Subtotal, tax (if applicable), and total
                     - Payment terms`;
+
             const response = await callAI(prompt, provider);
             setResult(response);
+
+            // Check if response contains failure message
+            if (response.includes('🚨 AI SERVICE UNAVAILABLE') || response.includes('❌')) {
+                console.error('AI service returned failure message');
+            }
         } catch (error) {
-            alert('Error generating invoice. Please try again.');
-            console.error(error);
+            setResult(`❌ Error: ${error.message}\n\nPlease check your internet connection and API configuration.`);
+            console.error('Task execution error:', error);
         } finally {
             setLoading(false);
         }
@@ -69,7 +75,7 @@ const InvoiceTask = ({ provider }: InvoiceTaskProps) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
                 {/* Form Section */}
                 <div className="p-4 sm:p-6 lg:p-8">
