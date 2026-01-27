@@ -1,4 +1,4 @@
-// AI Library with Latest Gemini Models (2025/2026)
+// AI Library
 // =======================================================================
 
 import type { AIProvider } from '../types/ai';
@@ -11,103 +11,71 @@ const getAPIKeys = () => {
         gemini: import.meta.env.VITE_GOOGLE_GEMINI_API_KEY || '',
     };
 
-    console.log('🔑 API Keys Status:', {
-        edenai: keys.edenai ? '✅ SET' : '❌ NOT SET',
-        openrouter: keys.openrouter ? '✅ SET' : '❌ NOT SET',
-        gemini: keys.gemini ? '✅ SET' : '❌ NOT SET'
+    console.log('API Keys Status:', {
+        edenai: keys.edenai ? 'SET' : 'NOT SET',
+        openrouter: keys.openrouter ? 'SET' : 'NOT SET',
+        gemini: keys.gemini ? 'SET' : 'NOT SET'
     });
 
     return keys;
 };
 
-// Google Gemini API call - Updated for 2026
+// Google Gemini API call
 const callGemini = async (prompt: string): Promise<string | null> => {
     const apiKey = getAPIKeys().gemini;
 
     if (!apiKey) {
-        console.error('❌ Gemini API key not configured');
+        console.warn('! Gemini API key not configured');
         return null;
     }
 
-    // Models to try (updated for 2026)
-    const modelsToTry = [
-        'gemini-2.0-flash-exp',      // Gemini 2.0 Flash (Latest experimental)
-        'gemini-1.5-flash-8b',       // Gemini 1.5 Flash 8B (Fast)
-        'gemini-1.5-flash',          // Gemini 1.5 Flash
-        'gemini-1.5-pro',            // Gemini 1.5 Pro
-        'gemini-pro',                // Legacy Gemini Pro
-    ];
+    console.log('Calling Gemini API...');
 
-    console.log('📡 Starting Gemini API calls...');
-    console.log('🔑 Using API Key:', apiKey.substring(0, 20) + '...');
+    const modelsToTry = [ 'gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro' ];
 
-    // Try each model
     for (const modelName of modelsToTry) {
         try {
-            // Use v1beta API endpoint
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-
-            console.log(`🔄 Trying: ${modelName}`);
-
-            const requestBody = {
-                contents: [{
-                    parts: [{
-                        text: prompt
-                    }]
-                }],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 2048,
-                }
-            };
 
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 2048,
+                    }
+                }),
             });
 
             if (!response.ok) {
                 const errorText = await response.text();
-                console.warn(`⚠️ ${modelName} failed (${response.status})`);
-
+                console.warn(`${modelName} failed (${response.status})`);
+                
                 try {
                     const errorJson = JSON.parse(errorText);
                     if (errorJson.error?.message) {
-                        console.warn(`   → ${errorJson.error.message}`);
+                        console.warn(`→ ${errorJson.error.message.substring(0, 100)}`);
                     }
                 } catch (e) {
                     // Ignore parse errors
                 }
-
-                continue; 
+                continue;
             }
 
             const data = await response.json();
             const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
             if (content) {
-                console.log(`✅ SUCCESS with ${modelName}!`);
-                console.log(`📏 Response: ${content.length} characters`);
+                console.log(`Gemini Success with ${modelName}!`);
                 return content;
             }
-
-            console.warn(`⚠️ ${modelName} returned no content`);
-
         } catch (error) {
-            console.warn(`⚠️ ${modelName} error:`, error instanceof Error ? error.message : 'Unknown error');
+            console.warn(`${modelName} error:`, error instanceof Error ? error.message : 'Unknown');
             continue;
         }
     }
-
-    // All models failed
-    console.error('❌ All Gemini models failed');
-    console.error('💡 Please check:');
-    console.error('   1. Your API key is valid');
-    console.error('   2. Generate a new key at: https://aistudio.google.com/app/apikey');
-    console.error('   3. Enable Generative Language API in Google Cloud Console');
 
     return null;
 };
@@ -117,11 +85,11 @@ const callOpenRouter = async (prompt: string): Promise<string | null> => {
     const apiKey = getAPIKeys().openrouter;
 
     if (!apiKey) {
-        console.error('❌ OpenRouter API key not configured');
+        console.warn('! OpenRouter API key not configured');
         return null;
     }
 
-    console.log('📡 Calling OpenRouter API...');
+    console.log('Calling OpenRouter API...');
 
     try {
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -142,7 +110,8 @@ const callOpenRouter = async (prompt: string): Promise<string | null> => {
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('❌ OpenRouter Error:', response.status, errorText);
+            console.warn('OpenRouter failed:', response.status);
+            console.warn('Error:', errorText.substring(0, 200));
             return null;
         }
 
@@ -150,15 +119,13 @@ const callOpenRouter = async (prompt: string): Promise<string | null> => {
         const content = data.choices?.[0]?.message?.content;
 
         if (content) {
-            console.log('✅ OpenRouter Success!');
+            console.log('OpenRouter Success!');
             return content;
         }
 
-        console.error('❌ No content in OpenRouter response');
         return null;
-
     } catch (error) {
-        console.error('❌ OpenRouter Network Error:', error);
+        console.warn('OpenRouter error:', error instanceof Error ? error.message : 'Unknown');
         return null;
     }
 };
@@ -168,11 +135,11 @@ const callEdenAI = async (prompt: string): Promise<string | null> => {
     const apiKey = getAPIKeys().edenai;
 
     if (!apiKey) {
-        console.error('❌ Eden AI API key not configured');
+        console.warn('! Eden AI API key not configured');
         return null;
     }
 
-    console.log('📡 Calling Eden AI...');
+    console.log('Calling Eden AI...');
 
     try {
         const response = await fetch('https://api.edenai.run/v2/text/chat', {
@@ -193,7 +160,8 @@ const callEdenAI = async (prompt: string): Promise<string | null> => {
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('❌ Eden AI Error:', response.status, errorText);
+            console.warn('Eden AI failed:', response.status);
+            console.warn('Error:', errorText.substring(0, 200));
             return null;
         }
 
@@ -201,29 +169,44 @@ const callEdenAI = async (prompt: string): Promise<string | null> => {
         const content = data.openai?.generated_text || data.openai?.message || data.results?.[0]?.generated_text;
 
         if (content) {
-            console.log('✅ Eden AI Success!');
+            console.log('Eden AI Success!');
             return content;
         }
 
-        console.error('❌ No content in Eden AI response');
         return null;
-
     } catch (error) {
-        console.error('❌ Eden AI Network Error:', error);
+        console.warn('Eden AI error:', error instanceof Error ? error.message : 'Unknown');
         return null;
     }
 };
 
-// Main AI call function
+// Get error message when AI is not available
+const getErrorMessage = (provider: AIProvider): string => {
+    return `
+    AI Service Not Available
+
+    The ${provider.toUpperCase()} service is currently unavailable.
+
+    Please try:
+    1. Switch to another AI provider from the dropdown menu
+    2. Check your internet connection
+    3. Verify your API key is configured correctly
+    4. Try again in a few moments
+
+    If the issue persists, contact support.
+    `;
+};
+
+// Main AI call function - Only AI response or error message
 export const callAI = async (prompt: string, provider: AIProvider): Promise<string> => {
-    console.log(`\n🚀 ===== AI REQUEST START =====`);
+    console.log(`\n===== AI REQUEST =====`);
     console.log(`Provider: ${provider.toUpperCase()}`);
-    console.log(`Prompt: ${prompt.substring(0, 100)}...`);
-    console.log(`==============================\n`);
+    console.log(`=========================\n`);
 
     let response: string | null = null;
 
     try {
+        // Call the selected provider only
         switch (provider) {
             case 'gemini':
                 response = await callGemini(prompt);
@@ -234,68 +217,21 @@ export const callAI = async (prompt: string, provider: AIProvider): Promise<stri
             case 'edenai':
                 response = await callEdenAI(prompt);
                 break;
-            default:
-                console.error(`❌ Unsupported provider: ${provider}`);
-                return getErrorMessage(provider);
         }
 
+        // Return AI response if successful
         if (response) {
-            console.log(`\n✅ ===== SUCCESS =====`);
-            console.log(`Provider: ${provider.toUpperCase()}`);
-            console.log(`Response Length: ${response.length}`);
-            console.log(`====================\n`);
+            console.log(`SUCCESS with ${provider.toUpperCase()}!`);
+            console.log(`Response length: ${response.length} characters\n`);
             return response;
         }
 
-        console.error(`\n❌ ===== FAILED =====`);
-        console.error(`Provider: ${provider.toUpperCase()}`);
-        console.error(`===================\n`);
-
+        // Return error message if AI failed
+        console.log(`${provider.toUpperCase()} failed\n`);
         return getErrorMessage(provider);
 
     } catch (error) {
-        console.error(`\n❌ ===== ERROR =====`);
-        console.error(`Provider: ${provider.toUpperCase()}`);
-        console.error(`Error:`, error);
-        console.error(`==================\n`);
-
+        console.error('❌ Error:', error);
         return getErrorMessage(provider);
     }
-};
-
-// Error message helper
-const getErrorMessage = (provider: AIProvider): string => {
-    if (provider === 'gemini') {
-        return `⚠️ GEMINI API KEY ISSUE
-
-Your Gemini API key is not working. Please:
-
-1. 🔑 Generate a NEW API key:
-   → Visit: https://aistudio.google.com/app/apikey
-   → Click "Create API key"
-   → Copy the new key
-
-2. 📝 Update your .env file:
-   VITE_GOOGLE_GEMINI_API_KEY=your_new_key_here
-
-3. 🔄 Restart your development server
-
-4. ✅ Enable the Generative Language API:
-   → Go to Google Cloud Console
-   → Enable "Generative Language API"
-
-OR try a different AI provider from the dropdown above!`;
-    }
-
-    return `⚠️ AI SERVICE NOT AVAILABLE
-
-The ${provider.toUpperCase()} service is currently unavailable.
-
-Please try:
-1. Check your API key configuration
-2. Select a different AI provider
-3. Check the console for detailed errors
-4. Wait a moment and try again
-
-Contact support if the problem persists.`;
 };
