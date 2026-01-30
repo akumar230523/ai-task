@@ -138,10 +138,6 @@ export default function Header({
                                 className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
                             >
                                 <Settings size={20} className="text-gray-600" />
-                                <ChevronDown
-                                    size={16}
-                                    className={`text-gray-500 transition-transform duration-200 ${showSettings ? 'rotate-180' : ''}`}
-                                />
                             </button>
 
                             {showSettings && (
