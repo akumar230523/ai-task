@@ -1,6 +1,3 @@
-// TASK 2: Legal Task
-// =======================================================================
-
 import { useState } from 'react';
 import { Scale, Loader2, Download, Copy, Check } from 'lucide-react';
 import { callAI } from '../lib/ai';
@@ -38,13 +35,14 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
 
         try {
             const prompt = `Draft a professional ${docType} with the following specifications: ${details}
-            Please create a comprehensive legal document with:
-            - Proper legal structure and sections
-            - Clear terms and conditions
-            - Standard clauses relevant to this document type
-            - Professional legal language
-            - Date and signature sections
-            Note: This is a template and should be reviewed by a legal professional.`;
+Please create a comprehensive legal document with:
+1. Proper legal structure and sections
+2. Clear terms and conditions
+3. Standard clauses relevant to this document type
+4. Professional legal language
+5. Date and signature sections
+
+Note: This is a template and should be reviewed by a legal professional.`;
             const response = await callAI(prompt, provider);
             setResult(response);
         } catch (error) {
@@ -76,7 +74,6 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
     return (
         <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-                {/* Form Section */}
                 <div className="p-4 sm:p-6 lg:p-8">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -88,9 +85,8 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
                         </div>
                     </div>
 
-                    <div className="space-y-4 sm:space-y-6">
-                        {/* Document Type */}
-                        <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div className="sm:col-span-2">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Document Type <span className="text-red-500">*</span>
                             </label>
@@ -108,8 +104,7 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
                             </select>
                         </div>
 
-                        {/* Document Details */}
-                        <div>
+                        <div className="sm:col-span-2">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Document Requirements <span className="text-red-500">*</span>
                             </label>
@@ -120,13 +115,9 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
                                 rows={10}
                                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none resize-none transition-colors text-sm sm:text-base"
                             />
-                            <p className="mt-2 text-xs text-gray-500">
-                                Provide as much detail as possible for a comprehensive document
-                            </p>
                         </div>
                     </div>
 
-                    {/* Generate Button */}
                     <button
                         onClick={generate}
                         disabled={loading}
@@ -146,7 +137,6 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
                     </button>
                 </div>
 
-                {/* Result Section */}
                 {result && (
                     <div className="border-t bg-gray-50">
                         <div className="p-4 sm:p-6 lg:p-8">
@@ -192,7 +182,6 @@ const LegalTask = ({ provider }: LegalTaskProps) => {
                 )}
             </div>
 
-            {/* Warning Card */}
             <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <p className="text-sm text-yellow-800">
                     <strong>⚠️ Legal Disclaimer:</strong> This AI-generated document is a template only.

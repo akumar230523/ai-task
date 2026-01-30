@@ -37,31 +37,34 @@ export default function Sidebar({
                 />
             )}
 
-            {/* Sidebar */}
+            {/* Sidebar - Now opens from right side */}
             <aside
                 className={`
-                    fixed top-0 left-0 h-full z-40 w-80 sm:w-96 max-w-[90vw] transform transition-transform duration-300 ease-in-out
-                    ${isOpen ? 'translate-x-0' : '-translate-x-full'} bg-white shadow-2xl flex flex-col
+                    fixed top-0 right-0 h-full z-40 w-80 sm:w-96 max-w-[90vw] transform transition-transform duration-300 ease-in-out
+                    ${isOpen ? 'translate-x-0' : 'translate-x-full'} bg-white shadow-2xl flex flex-col
                 `}
             >
 
-                {/* Tasks List */}
-                <div className="flex-1 overflow-y-auto p-4 pt-25">
-                    <div className="flex items-center gap-2 mb-4 text-sm font-medium text-gray-700">
-                        <Zap size={18} className="text-yellow-500" />
-                        <span>All Tasks</span>
-                        <span className="ml-auto text-xs bg-blue-100 text-blue-600 px-2.5 py-1 rounded-full font-bold">
+                {/* Sidebar Header */}
+                <div className="flex items-center justify-between p-4 border-b">
+                    <div className="flex items-center gap-2">
+                        <Zap size={20} className="text-yellow-500" />
+                        <span className="font-semibold text-gray-900">All Tasks</span>
+                        <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs font-bold">
                             {tasks.length}
                         </span>
-                        <button
-                            onClick={onClose}
-                            className="p-2 hover:bg-white/50 rounded-lg transition-colors"
-                            aria-label="Close sidebar"
-                        >
-                            <X size={22} className="text-gray-600" />
-                        </button>
                     </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        aria-label="Close sidebar"
+                    >
+                        <X size={22} className="text-gray-600" />
+                    </button>
+                </div>
 
+                {/* Tasks List */}
+                <div className="flex-1 overflow-y-auto p-4">
                     <div className="space-y-2.5">
                         {tasks.map(task => {
                             const Icon = task.icon;
@@ -86,6 +89,7 @@ export default function Sidebar({
                                 `}>
                                         <Icon
                                             size={22}
+                                            // className={isActive ? `text-${task.color}-700` : ''}
                                             className={isActive ? `text-${task.color}-700` : 'text-gray-600'}
                                         />
                                     </div>
