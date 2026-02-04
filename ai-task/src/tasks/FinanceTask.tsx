@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DollarSign, Loader2, Download, Copy, Check } from 'lucide-react';
 import { callAI } from '../lib/ai';
+import { THEME } from '../lib/constants';
 import type { AIProvider } from '../types/ai';
 
 interface FinanceTaskProps {
@@ -95,155 +96,152 @@ const FinanceTask = ({ provider }: FinanceTaskProps) => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto">
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-                <div className="p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                            <DollarSign className="text-green-600" size={20} />
-                        </div>
-                        <div>
-                            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Finance & Investment</h2>
-                            <p className="text-xs sm:text-sm text-gray-500">Investment analysis and planning</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                        <div className="sm:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Investment Type <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                                value={investmentType}
-                                onChange={(e) => setInvestmentType(e.target.value)}
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none bg-white transition-colors"
-                            >
-                                <option value="">Select investment type...</option>
-                                {investmentTypes.map(type => (
-                                    <option key={type} value={type}>{type}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Investment Amount (₹) <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="number"
-                                placeholder="e.g., 500000"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Time Horizon <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="e.g., 5 years, 10+ years, Short-term"
-                                value={timeHorizon}
-                                onChange={(e) => setTimeHorizon(e.target.value)}
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Risk Tolerance
-                            </label>
-                            <select
-                                value={riskTolerance}
-                                onChange={(e) => setRiskTolerance(e.target.value)}
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none bg-white transition-colors"
-                            >
-                                <option value="">Select risk tolerance...</option>
-                                {riskTolerances.map(risk => (
-                                    <option key={risk} value={risk}>{risk}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Financial Goals
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="e.g., Retirement, Home purchase, Education"
-                                value={financialGoals}
-                                onChange={(e) => setFinancialGoals(e.target.value)}
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors"
-                            />
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={handleGenerate}
-                        disabled={loading}
-                        className="w-full mt-6 py-3 sm:py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
-                    >
-                        {loading ? (
-                            <>
-                                <Loader2 className="animate-spin" size={20} />
-                                <span>Generating Financial Plan...</span>
-                            </>
-                        ) : (
-                            <>
-                                <DollarSign size={20} />
-                                <span>Generate Investment Plan (₹99)</span>
-                            </>
-                        )}
-                    </button>
-                </div>
-
-                {result && (
-                    <div className="border-t bg-gray-50">
-                        <div className="p-4 sm:p-6 lg:p-8">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                                <h3 className="text-lg font-bold text-gray-900">Financial Investment Plan</h3>
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={handleCopy}
-                                        className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-100 border-2 border-gray-300 text-gray-700 font-medium rounded-lg transition-colors text-sm"
-                                    >
-                                        {copied ? (
-                                            <>
-                                                <Check size={16} />
-                                                <span className="hidden sm:inline">Copied!</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Copy size={16} />
-                                                <span className="hidden sm:inline">Copy</span>
-                                            </>
-                                        )}
-                                    </button>
-                                    <button
-                                        onClick={handleDownload}
-                                        className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-sm"
-                                    >
-                                        <Download size={16} />
-                                        <span className="hidden sm:inline">Download</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="bg-white border-2 border-gray-200 rounded-lg p-4 sm:p-6 max-h-96 overflow-y-auto">
-                                <pre className="text-xs sm:text-sm whitespace-pre-wrap font-mono text-gray-800">
-                                    {result}
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                )}
+        <div className="p-6">
+            <div className="mb-8">
+                <h2 className="text-2xl font-bold text-white mb-2">Finance & Investment</h2>
+                <p className="text-gray-400">Investment analysis and planning</p>
             </div>
 
-            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-sm text-green-800">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Investment Type <span className="text-red-400">*</span>
+                    </label>
+                    <select
+                        value={investmentType}
+                        onChange={(e) => setInvestmentType(e.target.value)}
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors"
+                    >
+                        <option value="" className="text-gray-500">Select investment type...</option>
+                        {investmentTypes.map(type => (
+                            <option key={type} value={type} className="bg-gray-800">{type}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Investment Amount (₹) <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        placeholder="e.g., 500000"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Time Horizon <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="e.g., 5 years, 10+ years, Short-term"
+                        value={timeHorizon}
+                        onChange={(e) => setTimeHorizon(e.target.value)}
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Risk Tolerance
+                    </label>
+                    <select
+                        value={riskTolerance}
+                        onChange={(e) => setRiskTolerance(e.target.value)}
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors"
+                    >
+                        <option value="" className="text-gray-500">Select risk tolerance...</option>
+                        {riskTolerances.map(risk => (
+                            <option key={risk} value={risk} className="bg-gray-800">{risk}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Financial Goals
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="e.g., Retirement, Home purchase, Education"
+                        value={financialGoals}
+                        onChange={(e) => setFinancialGoals(e.target.value)}
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors"
+                    />
+                </div>
+            </div>
+
+            <button
+                onClick={handleGenerate}
+                disabled={loading}
+                className="w-full py-3.5 text-white font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ backgroundColor: THEME.primary }}
+            >
+                {loading ? (
+                    <>
+                        <Loader2 className="animate-spin" size={20} />
+                        <span>Generating Financial Plan...</span>
+                    </>
+                ) : (
+                    <>
+                        <DollarSign size={20} />
+                        <span>Generate Investment Plan (₹99)</span>
+                    </>
+                )}
+            </button>
+
+            {result && (
+                <div className="mt-8">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-bold text-white">Financial Investment Plan</h3>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={handleCopy}
+                                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 rounded-lg transition-colors flex items-center gap-2"
+                            >
+                                {copied ? (
+                                    <>
+                                        <Check size={16} />
+                                        <span>Copied!</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Copy size={16} />
+                                        <span>Copy</span>
+                                    </>
+                                )}
+                            </button>
+                            <button
+                                onClick={handleDownload}
+                                className="px-4 py-2 text-white rounded-lg transition-colors flex items-center gap-2 hover:opacity-90"
+                                style={{ backgroundColor: THEME.primary }}
+                            >
+                                <Download size={16} />
+                                <span>Download</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto dark-scrollbar">
+                        <pre className="text-sm whitespace-pre-wrap font-mono text-gray-300">
+                            {result}
+                        </pre>
+                    </div>
+                </div>
+            )}
+
+            <div
+                className="mt-6 p-4 rounded-lg border"
+                style={{
+                    backgroundColor: `${THEME.primary}10`,
+                    borderColor: `${THEME.primary}30`
+                }}
+            >
+                <p className="text-sm" style={{ color: THEME.primary }}>
                     <strong>⚠️ Important:</strong> Past performance is not indicative of future results. Always consult with a certified financial advisor before making investment decisions.
                 </p>
             </div>

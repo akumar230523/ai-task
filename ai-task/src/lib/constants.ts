@@ -64,6 +64,21 @@ import HealthcareTask from '../tasks/HealthcareTask';
 import ResearchTask from '../tasks/ResearchTask';
 import ProjectManagementTask from '../tasks/ProjectManagementTask';
 
+// Theme Configuration
+export const THEME = {
+    primary: '#3b82f6',    // Blue-500
+    secondary: '#8b5cf6',   // Violet-500
+    accent: '#10b981',      // Emerald-500
+    background: '#0f172a',  // Gray-900
+    card: '#1e293b',        // Gray-800
+    border: '#334155',      // Gray-700
+    text: {
+        primary: '#f8fafc',  // Gray-50
+        secondary: '#cbd5e1', // Gray-300
+        muted: '#94a3b8'     // Gray-400
+    }
+};
+
 // Application Settings
 export const APP_CONFIG = {
     name: 'AI Task Platform',
@@ -73,6 +88,13 @@ export const APP_CONFIG = {
     kioskPIN: '1234'
 };
 
+// AI Providers
+export const AI_PROVIDERS = [
+    { id: 'edenai', name: 'Eden AI', description: 'Multi-model aggregator' },
+    { id: 'openrouter', name: 'OpenRouter', description: 'Access to 100+ models' },
+    { id: 'gemini', name: 'Google Gemini', description: 'Google\'s AI model' }
+];
+
 // All Available Tasks (28 Total)
 export const TASKS: TaskDefinition[] = [
     // Business & Finance (7 tasks)
@@ -80,7 +102,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'invoice',
         name: 'Invoice Generator',
         icon: FileText,
-        color: 'blue',
         description: 'Create professional invoices instantly',
         category: 'Business & Finance',
         component: InvoiceTask
@@ -89,7 +110,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'accounting',
         name: 'Accounting & Bookkeeping',
         icon: Calculator,
-        color: 'emerald',
         description: 'Financial records and bookkeeping',
         category: 'Business & Finance',
         component: AccountingTask
@@ -98,7 +118,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'taxation',
         name: 'Tax Planning',
         icon: Receipt,
-        color: 'amber',
         description: 'Tax planning and filing assistance',
         category: 'Business & Finance',
         component: TaxationTask
@@ -107,7 +126,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'business-consulting',
         name: 'Business Consulting',
         icon: Briefcase,
-        color: 'slate',
         description: 'Strategic business advice',
         category: 'Business & Finance',
         component: BusinessConsultingTask
@@ -116,7 +134,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'startup-advisory',
         name: 'Startup Advisory',
         icon: Rocket,
-        color: 'violet',
         description: 'Startup strategy and planning',
         category: 'Business & Finance',
         component: StartupAdvisoryTask
@@ -125,7 +142,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'finance',
         name: 'Finance & Investment',
         icon: DollarSign,
-        color: 'green',
         description: 'Investment analysis and planning',
         category: 'Business & Finance',
         component: FinanceTask
@@ -134,7 +150,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'real-estate',
         name: 'Real Estate Docs',
         icon: Home,
-        color: 'teal',
         description: 'Real estate documentation',
         category: 'Business & Finance',
         component: RealEstateTask
@@ -145,7 +160,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'legal',
         name: 'Legal Drafter',
         icon: Scale,
-        color: 'purple',
         description: 'Draft legal documents and contracts',
         category: 'Legal & Compliance',
         component: LegalTask
@@ -154,7 +168,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'immigration',
         name: 'Immigration & Visa',
         icon: Plane,
-        color: 'sky',
         description: 'Immigration documentation assistance',
         category: 'Legal & Compliance',
         component: ImmigrationTask
@@ -165,7 +178,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'architecture',
         name: 'Architecture Design',
         icon: Building2,
-        color: 'stone',
         description: 'Architectural planning and design',
         category: 'Design & Creative',
         component: ArchitectureTask
@@ -174,7 +186,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'interior-design',
         name: 'Interior Design',
         icon: Sofa,
-        color: 'rose',
         description: 'Interior design concepts',
         category: 'Design & Creative',
         component: InteriorDesignTask
@@ -183,7 +194,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'graphic-design',
         name: 'Graphic Design',
         icon: Palette,
-        color: 'pink',
         description: 'Visual design concepts',
         category: 'Design & Creative',
         component: GraphicDesignTask
@@ -192,7 +202,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'uiux-design',
         name: 'UI/UX Design',
         icon: Smartphone,
-        color: 'indigo',
         description: 'User interface and experience design',
         category: 'Design & Creative',
         component: UIUXDesignTask
@@ -203,7 +212,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'coding',
         name: 'Software Development',
         icon: Code,
-        color: 'cyan',
         description: 'Code generation and debugging',
         category: 'Technology',
         component: CodingTask
@@ -212,7 +220,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'data-analysis',
         name: 'Data Analysis',
         icon: BarChart3,
-        color: 'blue',
         description: 'Data insights and visualization',
         category: 'Technology',
         component: DataAnalysisTask
@@ -221,7 +228,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'project-management',
         name: 'Project Management',
         icon: ClipboardList,
-        color: 'orange',
         description: 'Project planning and tracking',
         category: 'Technology',
         component: ProjectManagementTask
@@ -230,7 +236,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'research',
         name: 'Research & Analytics',
         icon: Search,
-        color: 'fuchsia',
         description: 'Research and data analysis',
         category: 'Technology',
         component: ResearchTask
@@ -241,7 +246,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'email',
         name: 'Email Writer',
         icon: Mail,
-        color: 'orange',
         description: 'Professional email composition',
         category: 'Content & Communication',
         component: EmailTask
@@ -250,7 +254,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'content-writing',
         name: 'Content Writing',
         icon: PenTool,
-        color: 'yellow',
         description: 'Blog posts and articles',
         category: 'Content & Communication',
         component: ContentWritingTask
@@ -259,7 +262,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'editing',
         name: 'Editing & Proofreading',
         icon: FileEdit,
-        color: 'red',
         description: 'Content editing and correction',
         category: 'Content & Communication',
         component: EditingTask
@@ -268,7 +270,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'translate',
         name: 'Language Translator',
         icon: MessageSquare,
-        color: 'indigo',
         description: 'Translate between languages',
         category: 'Content & Communication',
         component: TranslateTask
@@ -277,7 +278,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'digital-marketing',
         name: 'Digital Marketing',
         icon: TrendingUp,
-        color: 'lime',
         description: 'Marketing strategy and content',
         category: 'Content & Communication',
         component: DigitalMarketingTask
@@ -288,7 +288,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'education',
         name: 'Education & Tutoring',
         icon: GraduationCap,
-        color: 'blue',
         description: 'Educational content creation',
         category: 'Professional Services',
         component: EducationTask
@@ -297,7 +296,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'resume',
         name: 'Resume Builder',
         icon: FileUser,
-        color: 'gray',
         description: 'Professional resume creation',
         category: 'Professional Services',
         component: ResumeTask
@@ -306,7 +304,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'hr',
         name: 'HR & Recruitment',
         icon: Users,
-        color: 'purple',
         description: 'HR documentation and recruitment',
         category: 'Professional Services',
         component: HRTask
@@ -315,7 +312,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'healthcare',
         name: 'Healthcare Admin',
         icon: Heart,
-        color: 'red',
         description: 'Healthcare documentation',
         category: 'Professional Services',
         component: HealthcareTask
@@ -324,7 +320,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'voice',
         name: 'Voice Transcription',
         icon: Mic,
-        color: 'green',
         description: 'Audio to text transcription',
         category: 'Professional Services',
         component: VoiceTask
@@ -335,7 +330,6 @@ export const TASKS: TaskDefinition[] = [
         id: 'civil-engineering',
         name: 'Civil Engineering',
         icon: Construction,
-        color: 'orange',
         description: 'Civil engineering documentation',
         category: 'Engineering',
         component: CivilEngineeringTask

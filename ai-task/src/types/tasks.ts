@@ -47,7 +47,6 @@ export interface TaskDefinition {
     id: TaskId;
     name: string;
     icon: LucideIcon;
-    color: string;
     description: string;
     category: TaskCategory;
     component: React.ComponentType<{ provider: AIProvider }>;

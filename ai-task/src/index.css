@@ -5,8 +5,75 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 215 25% 27%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 210 40% 98%;
+    --border: 215 25% 27%;
+    --radius: 0.5rem;
+  }
+
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-[#0f172a] text-gray-100 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .dark-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(215 25% 27%) transparent;
+  }
+
+  .dark-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .dark-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .dark-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded-full;
+  }
+
+  .dark-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 shadow-xl;
+  }
+
+  .neumorphic-btn {
+    @apply bg-gray-800 border border-gray-700 shadow-lg hover:shadow-xl 
+           transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .gradient-border {
+    @apply relative before:absolute before:inset-0 before:p-[1px] 
+           before:rounded-lg before:bg-gradient-to-r before:from-blue-500 
+           before:to-purple-500 before:-z-10;
+  }
+
+  .task-card {
+    @apply bg-gray-800/80 border border-gray-700/50 rounded-xl 
+           hover:border-blue-500/30 transition-all duration-300;
+  }
+
+  .input-dark {
+    @apply bg-gray-900/50 border border-gray-700 text-gray-100 
+           placeholder:text-gray-500 focus:border-blue-500 
+           focus:ring-1 focus:ring-blue-500/20;
   }
 }
 

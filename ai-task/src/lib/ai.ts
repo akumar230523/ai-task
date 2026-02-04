@@ -58,7 +58,7 @@ const callGemini = async (prompt: string): Promise<string | null> => {
                     if (errorJson.error?.message) {
                         console.warn(`→ ${errorJson.error.message.substring(0, 100)}`);
                     }
-                } catch (e) {
+                } catch {
                     // Ignore parse errors
                 }
                 continue;
@@ -201,7 +201,7 @@ const getErrorMessage = (provider: AIProvider): string => {
 export const callAI = async (prompt: string, provider: AIProvider): Promise<string> => {
     console.log(`\n===== AI REQUEST =====`);
     console.log(`Provider: ${provider.toUpperCase()}`);
-    console.log(`=========================\n`);
+    console.log(`--------------------\n`);
 
     let response: string | null = null;
 

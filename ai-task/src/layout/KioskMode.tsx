@@ -1,6 +1,3 @@
-// Kiosk Mode with Security Features
-// =======================================================================
-
 import { useEffect, useState } from 'react';
 import { Shield, Lock, AlertTriangle } from 'lucide-react';
 
@@ -14,12 +11,10 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
     const [exitCode, setExitCode] = useState('');
     const [error, setError] = useState('');
 
-    // Security: Disable right-click
     const disableRightClick = (e: MouseEvent) => {
         e.preventDefault();
     };
 
-    // Security: Block developer shortcuts
     const blockDevShortcuts = (e: KeyboardEvent) => {
         const blocked =
             e.key === 'F12' ||
@@ -33,7 +28,6 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
         }
     };
 
-    // Enter fullscreen mode
     const enterFullscreen = async () => {
         try {
             if (!document.fullscreenElement) {
@@ -44,7 +38,6 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
         }
     };
 
-    // Exit fullscreen mode
     const exitFullscreen = async () => {
         try {
             if (document.fullscreenElement) {
@@ -55,7 +48,6 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
         }
     };
 
-    // Kiosk lifecycle
     useEffect(() => {
         if (!isEnabled) return;
 
@@ -63,7 +55,6 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
         document.addEventListener('keydown', blockDevShortcuts);
         enterFullscreen();
 
-        // Prevent accidental fullscreen exit
         const handleFullscreenChange = () => {
             if (!document.fullscreenElement && isEnabled) {
                 setTimeout(() => enterFullscreen(), 100);
@@ -87,9 +78,7 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
     };
 
     const confirmExit = () => {
-        // Simple PIN check (in production, use proper authentication)
-        const correctPin = '1234'; // Should be environment variable
-
+        const correctPin = '1234';
         if (exitCode === correctPin) {
             onExit();
             setShowExitPrompt(false);
@@ -105,42 +94,41 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
     return (
         <>
             {/* Kiosk Top Bar */}
-            <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-2 px-4 z-50 shadow-lg">
-                <div className="flex justify-between items-center max-w-7xl mx-auto">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                        <Shield size={18} className="sm:w-5 sm:h-5" />
-                        <span className="font-bold text-xs sm:text-sm">SECURE KIOSK MODE</span>
-                        <span className="text-xs bg-white/20 px-2 py-0.5 rounded animate-pulse">
+            <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-gray-900 to-gray-800 text-white py-2 px-4 z-50 shadow-lg border-b border-gray-700">
+                <div className="flex justify-between items-center max-w-6xl mx-auto">
+                    <div className="flex items-center gap-3">
+                        <Shield className="text-blue-400" size={18} />
+                        <span className="font-bold text-sm">SECURE KIOSK MODE</span>
+                        <span className="text-xs bg-blue-500/20 px-2 py-0.5 rounded animate-pulse border border-blue-500/30">
                             ACTIVE
                         </span>
                     </div>
 
                     <button
                         onClick={handleExitAttempt}
-                        className="flex items-center gap-1 sm:gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded text-xs sm:text-sm font-medium transition-colors"
+                        className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded text-sm font-medium transition-colors border border-gray-700 flex items-center gap-2"
                     >
                         <Lock size={14} />
-                        <span className="hidden sm:inline">Exit Kiosk</span>
-                        <span className="sm:hidden">Exit</span>
+                        <span>Exit Kiosk</span>
                     </button>
                 </div>
             </div>
 
             {/* Exit Confirmation Modal */}
             {showExitPrompt && (
-                <div className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+                <div className="fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
+                    <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-md">
                         {/* Modal Header */}
-                        <div className="p-6 border-b">
+                        <div className="p-6 border-b border-gray-800">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <Lock size={24} className="text-red-600" />
+                                <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center border border-red-500/20">
+                                    <Lock size={24} className="text-red-400" />
                                 </div>
-                                <div className="min-w-0">
-                                    <h3 className="text-xl font-bold text-gray-900">
+                                <div>
+                                    <h3 className="text-xl font-bold text-white">
                                         Exit Kiosk Mode
                                     </h3>
-                                    <p className="text-sm text-gray-600 mt-0.5">
+                                    <p className="text-sm text-gray-400 mt-0.5">
                                         Enter PIN to continue
                                     </p>
                                 </div>
@@ -150,16 +138,16 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
                         {/* Modal Content */}
                         <div className="p-6 space-y-4">
                             {/* Warning */}
-                            <div className="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                                <AlertTriangle size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
-                                <p className="text-sm text-yellow-800">
+                            <div className="flex items-start gap-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                                <AlertTriangle size={18} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                                <p className="text-sm text-yellow-300">
                                     Exiting kiosk mode will disable security features and allow full system access.
                                 </p>
                             </div>
 
                             {/* PIN Input */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Admin PIN
                                 </label>
                                 <input
@@ -169,11 +157,11 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
                                     onKeyPress={(e) => e.key === 'Enter' && confirmExit()}
                                     placeholder="Enter 4-digit PIN"
                                     maxLength={4}
-                                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none text-center text-2xl font-mono tracking-widest"
+                                    className="w-full px-4 py-3 bg-gray-800 border-2 border-gray-700 rounded-lg focus:border-blue-500 focus:outline-none text-center text-2xl font-mono tracking-widest text-white"
                                     autoFocus
                                 />
                                 {error && (
-                                    <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                    <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
                                         <AlertTriangle size={14} />
                                         {error}
                                     </p>
@@ -187,21 +175,21 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
                         </div>
 
                         {/* Modal Actions */}
-                        <div className="p-6 border-t bg-gray-50 flex gap-3">
+                        <div className="p-6 border-t border-gray-800 bg-gray-900/50 flex gap-3">
                             <button
                                 onClick={() => {
                                     setShowExitPrompt(false);
                                     setError('');
                                     setExitCode('');
                                 }}
-                                className="flex-1 px-4 py-3 bg-white hover:bg-gray-50 text-gray-800 font-medium rounded-lg border-2 border-gray-300 transition-colors"
+                                className="flex-1 px-4 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-lg border border-gray-700 transition-colors"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={confirmExit}
                                 disabled={exitCode.length !== 4}
-                                className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+                                className="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
                             >
                                 Exit Kiosk
                             </button>
@@ -209,25 +197,6 @@ export default function KioskMode({ isEnabled, onExit }: KioskModeProps) {
                     </div>
                 </div>
             )}
-
-            {/* Global Kiosk Styles */}
-            <style>
-                {`
-          body {
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-          body::-webkit-scrollbar {
-            display: none;
-          }
-          * {
-            -webkit-tap-highlight-color: transparent;
-          }
-        `}
-            </style>
         </>
     );
 }
